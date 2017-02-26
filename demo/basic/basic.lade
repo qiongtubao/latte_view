@@ -1,0 +1,7 @@
+list
+	latte   
+		label "hello"
+		button "click"
+	latte 
+		label "word"
+		button "click"

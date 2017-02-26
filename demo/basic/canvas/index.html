@@ -1,0 +1,24 @@
+<html>
+<head>
+
+</head>
+<body>
+<canvas id="canvas">
+</canvas>
+</body>
+<script type="text/javascript" src="../../build/canvas/latte_view.js"></script>
+<script>
+	var latteView = latte.require("latte_view");
+	var obj = latteView.createObject({
+		name: "hello"
+	});
+	var canvas = latteView.create("canvas");
+	latte_view.route({
+		index: "basic",
+		basic: {
+			url: "../basic.lade",
+			data: obj
+		}
+	});
+</script>
+</html>
