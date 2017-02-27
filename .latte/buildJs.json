@@ -1,0 +1,25 @@
+{
+	"keys": {
+
+	},
+	"build": [
+		{
+			"command": "three",
+			"types": "js",
+			"files": {
+				"./src/canvas": "latte_view"
+			},
+			"out": "./build/{{version}}/canvas/{{name}}.js"
+		},
+		{
+			"command": "mini",
+			"type": "js",
+			"in": ["./build/{{version}}/canvas/{{name}}.js"],
+			"out": ["./build/canvas/{{name}}.js"]
+		}
+
+	],
+	"files_modules": {
+		
+	}
+}
