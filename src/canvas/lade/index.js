@@ -1,6 +1,12 @@
 var latte_lib = require("latte_lib");
 (function() {
 	this.parse = function(str) {
+		try {
+			data = JSON.parse(str);
+			return data;
+		}catch(e) {
+
+		}
 		
 	}
 		var LadeObject = function(object) {
