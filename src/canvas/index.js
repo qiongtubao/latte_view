@@ -1,9 +1,13 @@
+var Loader = require("./loader");
+var Context = require("./context");
+var Loade = require("./lade"); 
 var LatteView = function(dom) {
-	this.dom = new Context(dom);
+	this.context = new Context(dom);
+	this._context = new Context();
 	this.width = dom.width;
 	this.height = dom.height;
 	this.loader = new Loader();
-	this.root = new LatteDom({
+	this.root = Loade.create({
 		type: "root",
 		style: {
 			width: width,

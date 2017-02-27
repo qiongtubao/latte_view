@@ -1,4 +1,5 @@
 var latte_lib = require("latte_lib");
+var lade = require("../lade");
 var Loader = function() {
 	this.cache = {};
 };
