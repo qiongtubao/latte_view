@@ -247,5 +247,8 @@
 		var context = new Context(dom);
 		return context;
 	}
-	this.createBoard = function() 
+	this.createBoard = function(dom) {
+		var board = new Board(dom) 
+		return board;
+	}
 }).call(module.exports);	
