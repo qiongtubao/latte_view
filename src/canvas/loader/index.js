@@ -61,4 +61,9 @@ latte_lib.extends(Loader, latte_lib.events);
 		self.cache[url] = image;
 		return image;
 	}
+}).call(Loader.prototype);
+(function() {
+	this.create = function(config) {
+		return new Loader(config);
+	}
 }).call(module.exports);

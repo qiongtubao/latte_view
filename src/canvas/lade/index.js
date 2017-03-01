@@ -1,15 +1,25 @@
 var latte_lib = require("latte_lib");
 (function() {
+	var objectToLade = function(data) {
+		var ladeObject = new LadeObject(data);
+		data.childrens.forEach(function(c) {
+			var child = objectToLade(c);
+			ladeObject.appendChild(child);
+		});
+		return ladeObject;
+	}
 	this.parse = function(str) {
 		try {
-			data = JSON.parse(str);
-			return data;
+			var data = JSON.parse(str);
+		 	return objectToLade(data);
 		}catch(e) {
-
+			console.log(e);
 		}
-		
+
 	}
 		var LadeObject = function(object) {
+			this.tag = object.tag;
+			this.id = object.id;
 			this.style = object.style;
 			this.latte =object.latte;
 			this.childrens = [];
