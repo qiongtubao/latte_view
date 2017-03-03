@@ -59,12 +59,12 @@ var LatteView = function(dom) {
 		sort.forEach(function(key) {
 			self.layers[key].forEach(function(c) {
 				var object = self.context.draw(c);
-				//self.border.drawCache(c, {x: 0, y:0});
+				self.border.drawCache(c, {x: 0, y:0});
 				//console.log(c);
 			});
 			
 		});
-		self.border.drawCache(this.root.childrens[0], {x: 0, y:0});
+		//self.border.drawCache(this.root.childrens[0], {x: 0, y:0});
 		//this.context.draw(this.root);
 	}
 

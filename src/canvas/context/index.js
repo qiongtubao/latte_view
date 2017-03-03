@@ -249,8 +249,8 @@
 			if(object.cache) {
 				return object.cache;
 			}
-			
-			if(!object.childrens) {	
+			object.childrens = object.childrens || [];
+			if(!object.childrens || !object.childrens.length) {	
 				var self = this;
 				self.board.clean();
 				var tagHandle = require("./tags/"+object.tag);
@@ -280,8 +280,8 @@
 			self.board.clean();
 			var tagHandle = require("./tags/"+object.tag);
 			var cache = tagHandle.draw(this.board,  {x: 0, y:0}, object);
-			maxWidth = Math.max(maxWidth, offsetX);
-			maxHight = Math.max(maxHight, offsetY);
+			maxWidth = cache.width || Math.max(maxWidth, offsetX);
+			maxHight = cache.height || Math.max(maxHight, offsetY);
 			
 			var local = {
 				x: 0,
@@ -290,10 +290,14 @@
 				offsetY: 0
 			};
 			object.childrens.forEach(function(c) {
-				if(c.style.position = "absolute") {
+				console.log(c);
+				if(c.style.position == "absolute") {
 					return;
 				}
-				var result = board.drawCache(c, local);
+				var result = self.board.drawCache(c, {
+					x: local.x + local.offsetX,
+					y: local.y + local.offsetY
+				});
 				if(object.style.flex == "row") {
 					local.offsetX += cache.width;
 				}else{

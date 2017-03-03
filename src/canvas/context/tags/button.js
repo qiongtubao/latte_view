@@ -8,10 +8,8 @@
 
 	};
 	this.draw = function(ctx, local, object) {
-		console.log("??????????????????");
 		var style = latte_lib.merger(defaultType, object.style);
 		var result =ctx.drawBox(local, style);
-		//var result = style;
 		ctx.drawTextMiddle(local, style, object.text || "按钮");
 		return result;
 	}
