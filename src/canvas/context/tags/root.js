@@ -1,7 +1,7 @@
 (function() {
 	var latte_lib = require("latte_lib");
 	var defaultStyle = {
-		backgroudColor: "#aa0000",
+		backgroundColor: "#aa0000",
 		borderColor: "#aa0000",
 		borderWidth: 1
 	}
@@ -10,10 +10,12 @@
 			x: 0,
 			y: 0
 		}, latte_lib.merger(defaultStyle, object.style));
-		object.childrens.forEach(function(c) {
-			ctx.draw(c)
-		});
-		return attr;
+		return {
+			x: 0,
+			y: 0,
+			width: object.style.width,
+			height: object.style.height
+		};
 	}
-	
+
 }).call(module.exports);

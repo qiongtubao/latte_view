@@ -2,10 +2,13 @@ var latte_lib = require("latte_lib");
 (function() {
 	var objectToLade = function(data) {
 		var ladeObject = new LadeObject(data);
-		data.childrens.forEach(function(c) {
-			var child = objectToLade(c);
-			ladeObject.appendChild(child);
-		});
+		if(data.childrens) {
+			data.childrens.forEach(function(c) {
+				var child = objectToLade(c);
+				ladeObject.appendChild(child);
+			});
+		}
+		
 		return ladeObject;
 	}
 	this.parse = function(str) {

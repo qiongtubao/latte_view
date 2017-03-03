@@ -3,7 +3,7 @@ var Context = require("./context");
 var Loade = require("./lade"); 
 var LatteView = function(dom) {
 	this.context = Context.createContext();
-	this.border = Context.createBorder(dom);
+	this.border = Context.createBoard(dom);
 	this.width = dom.width;
 	this.height = dom.height;
 	this.loader = Loader.create();
@@ -34,7 +34,7 @@ var LatteView = function(dom) {
 		}
 	}
 		this._init = function(lade, layers) {
-			this.context.init(lade);
+			//this.context.init(lade);
 			if(lade.style.zIndex) {
 				layers[lade.style.zIndex] = layers[lade.style.zIndex] || [];
 				layers[lade.style.zIndex].push(lade);
@@ -43,7 +43,7 @@ var LatteView = function(dom) {
 			var self = this;
 			if(lade.childrens) {
 				lade.childrens.forEach(function(c) {
-					self.layer(c, layers);
+					self._init(c, layers);
 				});
 			}
 		}
@@ -52,15 +52,20 @@ var LatteView = function(dom) {
 		this.layers[0] = [this.root];
 		this._init(this.root, this.layers);
 	}
-	this.layer = function() {
-		this.layers = {};
-		this.root.childrens.forEach(function(c) {
-
-		})
-	}
+	
 	this.draw = function() {
-		this.layout();
-		this.context.draw(this.root);
+		var sort = Object.keys(this.layers).sort();
+		var self = this;
+		sort.forEach(function(key) {
+			self.layers[key].forEach(function(c) {
+				var object = self.context.draw(c);
+				//self.border.drawCache(c, {x: 0, y:0});
+				//console.log(c);
+			});
+			
+		});
+		self.border.drawCache(this.root.childrens[0], {x: 0, y:0});
+		//this.context.draw(this.root);
 	}
 
 }).call(LatteView.prototype);
