@@ -1,0 +1,31 @@
+<html>
+<meta charset="UTF-8">
+<head>
+
+</head>
+<body>
+<canvas id="canvas" width="500" height="500">
+</canvas>
+</body>
+<script type="text/javascript" src="../../latte_lib.js"></script>
+<script type="text/javascript" src="../../latte_view_canvas.js"></script>
+<script>
+	var latteView = latte.require("latte_view");
+	var latte_lib = latte.require("latte_lib");
+	var loader = latte.require("latte_view/loader");
+	loader.loadImageSync("../animation.png", function() {
+		var obj = latte_lib.object.create({
+			name: "hello"
+		});
+		var canvas = latteView.create("canvas");
+		canvas.route({
+			index: "basic",
+			basic: {
+				url: "../animation.lade",
+				data: obj
+			}
+		});
+	});
+	
+</script>
+</html>

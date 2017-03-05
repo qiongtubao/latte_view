@@ -21,10 +21,11 @@ var latte_lib = require("latte_lib");
 
 	}
 		var LadeObject = function(object) {
-			this.tag = object.tag;
-			this.id = object.id;
-			this.style = object.style;
-			this.latte =object.latte;
+			this.tag = object.tag || "latte";
+			this.id = object.id ;
+			this.style = object.style || {};
+			this.latte =object.latte || {};
+			this.attribute = object.attribute || {};
 			this.childrens = [];
 		};
 		latte_lib.extends(LadeObject, latte_lib.events);

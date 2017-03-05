@@ -1,10 +1,25 @@
 {
-	"type": "button",
+	"tag": "latte",
 	"style": {
-		
+		"flex": "row"
 	},
-	"latte": {
-		
-	},
-	"text": "click"
+	"latte": {},
+	"childrens": [
+		{
+			"tag": "label",
+			"text": "hello"
+		},
+		{
+			"tag": "button",
+			"style": {
+
+			},
+			"latte": {
+				
+			},
+			"text": "click"
+		}
+	]
+	
+	
 }

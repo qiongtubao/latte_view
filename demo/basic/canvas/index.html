@@ -1,4 +1,5 @@
 <html>
+<meta charset="UTF-8">
 <head>
 
 </head>
@@ -6,14 +7,16 @@
 <canvas id="canvas">
 </canvas>
 </body>
-<script type="text/javascript" src="../../build/canvas/latte_view.js"></script>
+<script type="text/javascript" src="../../latte_lib.js"></script>
+<script type="text/javascript" src="../../latte_view_canvas.js"></script>
 <script>
 	var latteView = latte.require("latte_view");
-	var obj = latteView.createObject({
+	var latte_lib = latte.require("latte_lib");
+	var obj = latte_lib.object.create({
 		name: "hello"
 	});
 	var canvas = latteView.create("canvas");
-	latte_view.route({
+	canvas.route({
 		index: "basic",
 		basic: {
 			url: "../basic.lade",

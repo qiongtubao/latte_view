@@ -1,0 +1,16 @@
+<html>
+<head>
+</head>
+<body>
+	<textarea id="imgData"></textarea>
+	<button onclick="updateImage();">刷新</button>
+	<img id="img">
+</body>
+<script type="text/javascript">
+	var updateImage = function() {
+		var text = document.getElementById("imgData").value;
+		document.getElementById("img").src=text;
+	}
+	
+</script>
+</html>

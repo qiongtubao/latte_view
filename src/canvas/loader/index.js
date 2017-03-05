@@ -36,10 +36,14 @@ latte_lib.extends(Loader, latte_lib.events);
 		var image = new Image();
 		image.src = url;
 		image.onload = callback;
+		//image.setAttribute("async","true");
 		return image;
 	}
 	this.loadImageSync = this.loadImage = function(url, callback) {
+		var self = this;
+		console.log('loading...image',url, self.cache);
 		if(self.cache[url]) {
+			console.log("have image");
 			if(self.cache[url].status == "loading") {
 				callback && self.once(url, callback);
 				return self.cache[url];
@@ -47,7 +51,7 @@ latte_lib.extends(Loader, latte_lib.events);
 			callback && callback(null, self.cache[url]);
 			return self.cache[url];
 		}
-		self.once(url, callback);
+		callback && self.once(url, callback);
 		var image = loadImage(url, function(err) {
 			if(err) {
 				delete self.cache[url];
@@ -55,15 +59,11 @@ latte_lib.extends(Loader, latte_lib.events);
 				return;
 			}
 			delete image.status;
-			self.emit(url, null, image);
+			self.emit(url, null, image, 1);
 		});
 		image.status = "loading";
 		self.cache[url] = image;
 		return image;
 	}
 }).call(Loader.prototype);
-(function() {
-	this.create = function(config) {
-		return new Loader(config);
-	}
-}).call(module.exports);
+module.exports = new Loader();
