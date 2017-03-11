@@ -20,20 +20,75 @@ var LatteView = function(dom) {
 };
 latte_lib.extends(LatteView, latte_lib.events);
 (function() {
-	this.findObject = function(point) {
+	var isIn = function(event, latte) {
+		var local = {x:0, y:0};
+		var o = latte;
+		while(o.parent) {
+			local.x += o.status.x;
+			local.y += o.status.y;
+			if(o.position == "absolute") {
+				break;
+			}
+			o = o.parent;
+		}
+		if(local.x < event.x && event.x < (local.x + latte.status.width) && local.y < event.y &&  event.y < (local.y + latte.status.height)) {
+			return true;
+		}
+		return false;
+	}
+	var find = function(latte, event) {
+		if(latte.childrens) {
+			var o ;
+			for(var i = latte.childrens.length -1; i >=0; i--) {
+				var c = latte.childrens[i];
+				var n = find(c, event);
+				if(n) {
+					return n;
+				}
+			}
+		}
+
+		if(isIn(event, latte) ) {
+			console.log(latte, latte.status);
+			return latte;
+		}
+		return null;
+		 
+		
+
+	}
+	this.findObject = function(event) {
+		var sort = Object.keys(this.layers).sort(function() {
+			return b > a;
+		});
+		var self = this;
+		for(var i = 0, len = sort.length; i < len ; i++) {
+			var layer = sort[i];
+			var layers = this.layers[layer];
+			for(var k = layers.length - 1; k >= 0; k--) {
+				var c =layers[k];
+				var m = find(c, event);
+				if(m) {
+					return m;
+				}
+			}
+		}
 
 	}
 	this.addClickEvent = function() {
 		var self = this;
 		this.dom.addEventListener("click", function(event) {
-			var e = {}
+			var e = {
+				x: event.offsetX,
+				y: event.offsetY
+			};
 			var result = self.findObject(e);
-			for(var i = 0, len = result.length; i < len; i++) {
-				var paths = getPaths(result[i]);
-				for(var i = 0, len = paths.length; i < len; i++) {
-					if(e.stop) { break; }
-					paths.emit("click", e);
-				}
+			console.log(result);
+			e.object = result;
+			var o = result;
+			while(!event.stop && o.parent) {
+				o.emit("click", event);
+				o = o.parent;
 			}
 		});
 	}

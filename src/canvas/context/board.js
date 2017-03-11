@@ -17,9 +17,20 @@ var Board = function(dom) {
 		暂时用image对象
 	*/
 	this.drawCache = function(object, local) {
+		if(object.tag == "animation") {
+			console.log(object, local);
+		}
+		object.status = {
+			position : object.style.position,
+			x:  local.x + (object.style.x || 0),
+			y: local.y + (object.style.y || 0),
+			width : object.cache.width,
+			height : object.cache.height
+		}
 		if(!object.cache.image) {
 			var cache = object.cache;
 			delete object.cache;
+
 			return {
 				width: cache.width,
 				height: cache.height
