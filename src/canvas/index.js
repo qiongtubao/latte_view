@@ -1,11 +1,12 @@
 var Loader = require("./loader");
-var Context = require("./context");
+var View = require("./view");
 var Loade = require("./lade"); 
 var latte_lib = require("latte_lib");
+var Controller = require("./controller");
 var LatteView = function(dom) {
 	this.dom = dom;
-	this.context = Context.createContext();
-	this.border = Context.createBoard(dom);
+	this.view = View.createContext();
+	this.border = View.createBoard(dom);
 	this.width = dom.width;
 	this.height = dom.height;
 	
@@ -105,6 +106,7 @@ latte_lib.extends(LatteView, latte_lib.events);
 				self.root.removeAllChild();
 				self.root.appendChild(data);
 				self.initRoot();
+				Controller.create(data, n.data);
 				self.draw();
 			});
 		}
@@ -147,7 +149,7 @@ latte_lib.extends(LatteView, latte_lib.events);
 		sort.forEach(function(key) {
 			self.layers[key].forEach(function(c) {
 				console.log(c);
-				var object = self.context.draw(c);
+				var object = self.view.draw(c);
 				self.border.drawCache(c, {x: 0, y:0});
 				//console.log(c);
 			});

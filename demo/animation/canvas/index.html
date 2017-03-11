@@ -22,7 +22,10 @@
 		}
 	], function() {
 		var obj = latte_lib.object.create({
-			name: "hello"
+			name: "hello",
+			click: function() {
+				console.log("fffff");
+			}
 		});
 		var canvas = latteView.create("canvas");
 		canvas.route({
