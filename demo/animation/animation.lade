@@ -78,7 +78,9 @@
 				        "width": 78,
 				        "height": 112
 					},
-					"latte": {},
+					"latte": {
+						"click": "click"
+					},
 					"childrens": []
 				}
 			]
