@@ -13,7 +13,14 @@
 	var latteView = latte.require("latte_view");
 	var latte_lib = latte.require("latte_lib");
 	var loader = latte.require("latte_view/loader");
-	loader.loadImageSync("../animation.png", function() {
+	latte_lib.async.parallel([
+		function(cb) {
+			loader.loadImageSync("../animation.png",cb);
+		},
+		function(cb) {
+			loader.loadAnimation("../animation.json", cb);
+		}
+	], function() {
 		var obj = latte_lib.object.create({
 			name: "hello"
 		});
@@ -25,7 +32,8 @@
 				data: obj
 			}
 		});
-	});
+	})
+	
 	
 </script>
 </html>

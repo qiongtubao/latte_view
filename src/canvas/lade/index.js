@@ -26,6 +26,7 @@ var latte_lib = require("latte_lib");
 			this.style = object.style || {};
 			this.latte =object.latte || {};
 			this.attribute = object.attribute || {};
+			this.text = object.text;
 			this.childrens = [];
 		};
 		latte_lib.extends(LadeObject, latte_lib.events);

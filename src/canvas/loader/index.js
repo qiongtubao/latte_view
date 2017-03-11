@@ -8,19 +8,19 @@ latte_lib.extends(Loader, latte_lib.events);
 	var loadFile = function(url, callback) {
 		latte_lib.xhr.get(url).end(function(err, res) {
 			if(err) { return callback(err); }
-			callback(null, res.text);
+			callback && callback(null, res.text);
 		});
 	};
 	this.loadView = function(url, callback) {
 		var self = this;
 		if(self.cache[url]) {
 			if(self.cache[url] == "loading") {
-				self.once(url, callback);
+				callback && self.once(url, callback);
 				return null;
 			}
 			return self.cache[url];
 		}
-		self.once(url, callback);
+		callback && self.once(url, callback);
 		self.cache[url] = "loading";
 		return loadFile(url, function(err, data) {
 			if(err) { 
@@ -64,6 +64,27 @@ latte_lib.extends(Loader, latte_lib.events);
 		image.status = "loading";
 		self.cache[url] = image;
 		return image;
+	}
+	this.loadAnimation = function(url, callback) {
+		var self = this;
+		if(self.cache[url]) {
+			if(self.cache[url] == "loading") {
+				callback && self.once(url, callback);
+				return null;
+			}
+			return self.cache[url];
+		}
+		callback && self.once(url, callback);
+		self.cache[url] = "loading";
+		return loadFile(url, function(err, data) {
+			if(err) { 
+				delete self.cache[url];
+				return self.emit(url, err);
+			}
+			var data =JSON.parse(data);
+			self.cache[url] = data;
+			self.emit(url, null, data);
+		});
 	}
 }).call(Loader.prototype);
 module.exports = new Loader();

@@ -4,32 +4,105 @@
 	"latte": {},
 	"childrens": [
 		{
-			"tag": "image",
+			"tag": "latte",
+			"style": {},
 			"latte": {},
-			"style": {
-
-			},
-			"attribute": {
-				"src": "../animation.png"
-			},
 			"childrens": [
+				{
+					"tag": "image",
+					"latte": {},
+					"style": {
 
+					},
+					"attribute": {
+						"src": "../animation.png"
+					},
+					"childrens": [
+
+					]
+				},
+				{
+					"tag": "latte",
+					"style": {
+						"lineWidth": 1,
+						"backgroundColor": "#000000",
+						"opacity": 0.6,
+						"position": "absolute",
+						"x": 160,
+				        "y": 0,
+				        "width": 78,
+				        "height": 112
+					},
+					"latte": {},
+					"childrens": []
+				},
+				{
+					"tag": "latte",
+					"style": {
+						"lineWidth": 1,
+						"backgroundColor": "#000000",
+						"opacity": 0.6,
+						"position": "absolute",
+						"x": 80,
+				        "y": 0,
+				        "width": 78,
+				        "height": 112
+					},
+					"latte": {},
+					"childrens": []
+				},
+				{
+					"tag": "latte",
+					"style": {
+						"lineWidth": 1,
+						"backgroundColor": "#000000",
+						"opacity": 0.6,
+						"position": "absolute",
+						"x": 0,
+				        "y": 114,
+				        "width": 78,
+				        "height": 112
+					},
+					"latte": {},
+					"childrens": []
+				},
+				{
+					"tag": "latte",
+					"style": {
+						"lineWidth": 1,
+						"backgroundColor": "#000000",
+						"opacity": 0.6,
+						"position": "absolute",
+						"x": 0,
+				        "y": 0,
+				        "width": 78,
+				        "height": 112
+					},
+					"latte": {},
+					"childrens": []
+				}
 			]
 		},
 		{
 			"tag": "latte",
 			"style": {
-				"linewidth": 1,
-				"backgroundColor": "#dd0000",
-				"opacity": 0.1,
-				"width": 100,
-				"height": 100,
-				"position": "absolute",
-				"x": 50,
-				"y": 50
+
 			},
 			"latte": {},
-			"childrens": []
+			"childrens": [
+				{
+					"tag": "animation",
+					"style": {
+
+					},
+					"latte": {},
+					"attribute": {
+						"src": "../animation.json"
+					},
+					"childrens": []
+				}
+			]
 		}
+		
 	]
 }

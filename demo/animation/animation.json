@@ -88,7 +88,7 @@
   "meta": {
     "app": "http://www.codeandweb.com/texturepacker ",
     "version": "1.0",
-    "image": "H1101_011.tt.png",
+    "image": "../animation.png",
     "format": "RGBA8888",
     "size": {
       "w": 256,

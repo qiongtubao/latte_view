@@ -74,7 +74,17 @@ latte_lib.extends(LatteView, latte_lib.events);
 		this.layers[0] = [this.root];
 		this._init(this.root, this.layers);
 	}
-	
+	var getChild = function(root) {
+		var result = [];
+		if( !root.childrens || !root.childrens.length ) {
+			return [root];
+		}
+		root.childrens.forEach(function(c) {
+			result = result.concat(getChild(c));
+		});
+		return result;
+	}
+
 	this.draw = function() {
 		var sort = Object.keys(this.layers).sort();
 		var self = this;
@@ -88,11 +98,9 @@ latte_lib.extends(LatteView, latte_lib.events);
 			});
 			
 		});
-		//console.log(self.root);
-		//self.border.drawCache(this.root.childrens[0].childrens[0], {x: 0, y:0});
-		//self.border.drawCache(this.root.childrens[0], {x: 0, y:0});
-		console.log(this.root);
-		//this.context.draw(this.root);
+		//setTimeout(function() {
+		//	self.draw();
+		//}, 1000);
 	}
 
 }).call(LatteView.prototype);

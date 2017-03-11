@@ -12,6 +12,7 @@
 		if(!style.width || !style.height) {
 			return {};
 		}
+		console.log("draw latte",local, style);
 		var result =ctx.drawBox(local, style);
 		return result;
 		

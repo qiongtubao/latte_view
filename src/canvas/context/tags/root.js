@@ -1,8 +1,8 @@
 (function() {
 	var latte_lib = require("latte_lib");
 	var defaultStyle = {
-		backgroundColor: "#aa0000",
-		borderColor: "#aa0000",
+		backgroundColor: "#ffffff",
+		borderColor: "#ffffff",
 		borderWidth: 1
 	}
 	this.draw = function(ctx, local, object)  {
