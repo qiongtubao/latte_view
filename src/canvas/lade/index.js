@@ -1,4 +1,5 @@
 var latte_lib = require("latte_lib");
+var Lade = require("./lade");
 (function() {
 	var objectToLade = function(data) {
 		var ladeObject = new LadeObject(data);
@@ -17,8 +18,16 @@ var latte_lib = require("latte_lib");
 		 	return objectToLade(data);
 		}catch(e) {
 			console.log(e);
+			//return null;
 		}
-
+		try {
+			var data = Lade.toObject(str);
+			return objectToLade(data);
+		}catch(e) {
+			console.log(e);
+			
+		}
+		return null;
 	}
 		var LadeObject = function(object) {
 			this.tag = object.tag || "latte";
