@@ -1,0 +1,110 @@
+{
+	"tag": "latte",
+	"style": {},
+	"latte": {},
+	"childrens": [
+		{
+			"tag": "latte",
+			"style": {},
+			"latte": {},
+			"childrens": [
+				{
+					"tag": "image",
+					"latte": {},
+					"style": {
+
+					},
+					"attribute": {
+						"src": "../animation.png"
+					},
+					"childrens": [
+
+					]
+				},
+				{
+					"tag": "latte",
+					"style": {
+						"lineWidth": 1,
+						"backgroundColor": "#000000",
+						"opacity": 0.6,
+						"position": "absolute",
+						"x": 160,
+				        "y": 0,
+				        "width": 78,
+				        "height": 112
+					},
+					"latte": {},
+					"childrens": []
+				},
+				{
+					"tag": "latte",
+					"style": {
+						"lineWidth": 1,
+						"backgroundColor": "#000000",
+						"opacity": 0.6,
+						"position": "absolute",
+						"x": 80,
+				        "y": 0,
+				        "width": 78,
+				        "height": 112
+					},
+					"latte": {},
+					"childrens": []
+				},
+				{
+					"tag": "latte",
+					"style": {
+						"lineWidth": 1,
+						"backgroundColor": "#000000",
+						"opacity": 0.6,
+						"position": "absolute",
+						"x": 0,
+				        "y": 114,
+				        "width": 78,
+				        "height": 112
+					},
+					"latte": {},
+					"childrens": []
+				},
+				{
+					"tag": "latte",
+					"style": {
+						"lineWidth": 1,
+						"backgroundColor": "#000000",
+						"opacity": 0.6,
+						"position": "absolute",
+						"x": 0,
+				        "y": 0,
+				        "width": 78,
+				        "height": 112
+					},
+					"latte": {
+						"click": "click"
+					},
+					"childrens": []
+				}
+			]
+		},
+		{
+			"tag": "latte",
+			"style": {
+
+			},
+			"latte": {},
+			"childrens": [
+				{
+					"tag": "animation",
+					"style": {
+
+					},
+					"latte": {},
+					"attribute": {
+						"src": "../animation.json"
+					},
+					"childrens": []
+				}
+			]
+		}
+		
+	]
+}
