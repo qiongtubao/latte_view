@@ -1,0 +1,10 @@
+latte latte latte {
+	lineWidth: 1, 
+	backgroundColor: "#000000", 
+	opacity: 0.6, 
+	position: "absolute", 
+	x: 160, 
+	y: 0, 
+	width: 78, 
+	height: 112
+}

@@ -1,7 +1,6 @@
 var Command = {};
 (function() {
 	this.after = function(data, dom, controller) {
-		console.log("click adding....");
 		var clickAttribute = dom.latte["click"];
 		if(clickAttribute) {
 			var clickEvent = function(e) {

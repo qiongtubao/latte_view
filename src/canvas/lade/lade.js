@@ -214,7 +214,7 @@
 		} 
 		var idArray = line.split("#");
 		if(idArray.length > 1) {
-			result.id = idArray[id.length-1];
+			result.id = idArray[idArray.length-1];
 			line = idArray[0];
 		}
 		result.tag = line.trim();
@@ -259,7 +259,6 @@
 			last = object;
 			//datas.push(object);
 		});
-		console.log(root);
 		return root;
 
 	}

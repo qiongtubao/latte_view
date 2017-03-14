@@ -9,7 +9,7 @@
 		var attr = ctx.drawBox({
 			x: 0,
 			y: 0
-		}, latte_lib.merger(defaultStyle, object.style));
+		}, object.style.mergerDefault(defaultStyle));
 		return {
 			x: 0,
 			y: 0,

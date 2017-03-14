@@ -5,13 +5,7 @@ var Board = function(dom) {
 	this._ctx = this._dom.getContext("2d");
 };
 (function() {
-	this.deleteCache = function(object) {
-		var o = object;
-		while(o) {
-			delete o.cache;
-			o = o.parent;
-		}
-	}
+	
 	/**
 		绘制缓存数据
 		暂时用image对象
@@ -48,7 +42,7 @@ var Board = function(dom) {
 		this.ctx.restore();
 		if(object.cache.once) {
 			var cache = object.cache;
-			this.deleteCache(object);
+			object.deleteCache();
 			return cache;
 		}
 		return object.cache;

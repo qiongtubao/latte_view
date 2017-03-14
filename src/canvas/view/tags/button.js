@@ -1,6 +1,6 @@
 (function() {
 	var latte_lib = require("latte_lib");
-	var defaultType = {
+	var defaultStyle = {
 		width: 130,
 		height: 50,
 		fontSize: 16,
@@ -8,7 +8,7 @@
 
 	};
 	this.draw = function(ctx, local, object) {
-		var style = latte_lib.merger(defaultType, object.style);
+		var style = object.style.mergerDefault(defaultStyle);
 		var result =ctx.drawBox(local, style);
 		ctx.drawTextMiddle(local, style, object.text || "按钮");
 		return result;
