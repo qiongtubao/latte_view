@@ -29,27 +29,90 @@ var Lade = require("./lade");
 		}
 		return null;
 	}
+		var Style = require("./style");
 		var LadeObject = function(object) {
 			this.tag = object.tag || "latte";
 			this.id = object.id ;
-			this.style = object.style || {};
-			this.latte =object.latte || {};
+			this.style = new Style(object.style);
 			this.attribute = object.attribute || {};
+			this.latte = object.latte || {};
 			this.text = object.text;
 			this.childrens = [];
+			if(object.latteView) {
+				this.updateLatteView(object.latteView);
+			}
+			this.style.on("zIndex", function() {
+				self.changezIndex && self.changezIndex();
+			});
+			this.style.on("change", function() {
+				self.changeStyle && self.changeStyle();
+			});
+			this.style.on("updateCache", function(cache, old) {
+				if(Object.keys(cache) == 0 && Object.keys(old) == 0) {
+					return;
+				}
+
+				if(old.zIndex != cache.zIndex) {
+					self.changezIndex && self.changezIndex();
+				}
+				self.changeStyle && self.changeStyle;
+				
+			});
 		};
 		latte_lib.extends(LadeObject, latte_lib.events);
 		(function() {
+			this.deleteCache = function() {
+				var o = this;
+				while(o) {
+					delete o.cache;
+					o = o.parent;
+				}
+			}
+			this.updateLatteView = function(latteView) {
+				if(!latteView) {
+					return;
+				}
+				if(this.latteView && this.latteView == latteView) {
+					return;
+				}
+				this.latteView = latteView;
+				var self = this;
+				this.changezIndex = function() {
+					latteView.layers = null;
+				}
+				this.changeStyle = function() {
+					self.deleteCache();
+				}
+				var cache = latteView.lcss.query(this);
+				this.style.setCache(cache);
+				this.updateChildLatteView(latteView);
+			}
+			this.updateChildLatteView = function(latteView) {
+				this.childrens.forEach(function(c) {
+					c.updateLatteView(latteView);
+				});
+			}
 			this.appendChild = function(o) {
 				this.childrens.push(o);
 				o.parent = this;
-				this.emit("appendChild", o);
+				this.emit("appendChild", o);				
+				if(this.latteView){ 
+					o.updateLatteView(this.latteView) 
+				}
+			}
+			this.removeLatte = function() {
+				this.cache = null;
+				this.latteView = null;
+				this.changezIndex = null;
+				this.changeStyle = null;
+				this.updateCache = null;
 			}
 			this.removeChild = function(o) {
 				var index = this.childrens.indexOf(o);
 				this.childrens.splice(index , 1);	
 				this.emit("removeChild", o);
 				o.parent = null;
+				o.removeLatte();
 			}
 			this.changeParent = function(nowParent) {
 				this.parent.removeChild(this);

@@ -3,21 +3,27 @@ var View = require("./view");
 var Loade = require("./lade"); 
 var latte_lib = require("latte_lib");
 var Controller = require("./controller");
-var LatteView = function(dom) {
+var Lcss = require("./lcss");
+var LatteView = function(dom, lcss) {
 	this.dom = dom;
-	this.view = View.createContext();
-	this.border = View.createBoard(dom);
+	this.lcss = Lcss.create(this);
+	this.view = View.createContext({
+		width: 1000,
+		height: 1000
+	}, this.lcss);
+	this.border = View.createBoard(dom, this.lcss);
 	this.width = dom.width;
 	this.height = dom.height;
-	
 	this.root = Loade.create({
 		tag: "root",
 		style: {
 			width: this.width,
 			height: this.height
-		}
+		},
+		latteView: this
 	});
 	this.addClickEvent();
+	
 };
 latte_lib.extends(LatteView, latte_lib.events);
 (function() {
@@ -37,7 +43,7 @@ latte_lib.extends(LatteView, latte_lib.events);
 		}
 		return false;
 	}
-	var find = function(latte, event) {
+	var findClick = function(latte, event) {
 		if(latte.childrens) {
 			var o ;
 			for(var i = latte.childrens.length -1; i >=0; i--) {
@@ -54,11 +60,8 @@ latte_lib.extends(LatteView, latte_lib.events);
 			return latte;
 		}
 		return null;
-		 
-		
-
 	}
-	this.findObject = function(event) {
+	this.findClickObject = function(event) {
 		var sort = Object.keys(this.layers).sort(function() {
 			return b > a;
 		});
@@ -68,7 +71,7 @@ latte_lib.extends(LatteView, latte_lib.events);
 			var layers = this.layers[layer];
 			for(var k = layers.length - 1; k >= 0; k--) {
 				var c =layers[k];
-				var m = find(c, event);
+				var m = findClick(c, event);
 				if(m) {
 					return m;
 				}
@@ -83,7 +86,7 @@ latte_lib.extends(LatteView, latte_lib.events);
 				x: event.offsetX,
 				y: event.offsetY
 			};
-			var result = self.findObject(e);
+			var result = self.findClickObject(e);
 			console.log(result);
 			e.object = result;
 			var o = result;
@@ -104,9 +107,12 @@ latte_lib.extends(LatteView, latte_lib.events);
 			Loader.loadView(n.url, function(err, data) {
 				if(err) {  console.log(err);return ;}
 				self.root.removeAllChild();
-				self.root.appendChild(data);
-				self.initRoot();
+				self.root.appendChild(data, this);
 				Controller.create(data, n.data);
+				if(n.lcss) {
+					console.log(n.lcss, n, self.lcss)
+					self.lcss.addFile(n.lcss);
+				}
 				self.draw();
 			});
 		}
@@ -126,7 +132,7 @@ latte_lib.extends(LatteView, latte_lib.events);
 				});
 			}
 		}
-	this.initRoot = function() {
+	this.initLayers = function() {
 		this.layers = {};
 		this.layers[0] = [this.root];
 		this._init(this.root, this.layers);
@@ -143,12 +149,14 @@ latte_lib.extends(LatteView, latte_lib.events);
 	}
 
 	this.draw = function() {
+		if(!this.layers) {
+			this.initLayers();
+		}
 		var sort = Object.keys(this.layers).sort();
 		var self = this;
 
 		sort.forEach(function(key) {
 			self.layers[key].forEach(function(c) {
-				console.log(c);
 				var object = self.view.draw(c);
 				self.border.drawCache(c, {x: 0, y:0});
 				//console.log(c);
@@ -159,7 +167,70 @@ latte_lib.extends(LatteView, latte_lib.events);
 		//	self.draw();
 		//}, 1000);
 	}
-
+	/**
+	var findOne = function(latte, view, less) {
+		var result  = [];
+		if(latte.less.isIt(view, less)) {
+			result.push(view);
+			return result;
+		}
+		view.childrens.forEach(function(c) {
+			result = result.concat(findOne(latte, c, less));
+		});
+		return result;
+	}
+	var find = function(latte, views, less) {
+		var result = [];
+		for(var i = 0, len = views.length ; i < len; i++) {
+			var findResult = findOne(latte, views[i], less);
+			if(findResult && findResult.length) {
+				result = reuslt.concat(findResult);
+			}
+		}
+		return result;
+	}
+	this.find = function(less) {
+		var result = [this.root];
+		for(var i = 0, len = less.selector.length; i < len; i++) {
+			result = find(result, less.selector[i], less);
+		}
+		return find(result, less);
+		
+	}
+	*/
+	var findOne = function(latte, less, self) {
+		var result  = [];
+		console.log(self);
+		if(self.lcss.isIt(latte, less)) {
+			result.push(latte);
+			return result;
+		}
+		latte.childrens.forEach(function(c) {
+			result = result.concat(findOne(c, less, self));
+		});
+		return result;
+	}
+	var find = function(lattes, less, self) {
+		var result = [];
+		for(var i = 0, len = lattes.length ; i < len; i++) {
+			result = result.concat(findOne(lattes[i], less, self));
+		}
+		return result;
+	}
+	this.find = function(less) {
+		var result = [this.root];
+		console.log(less);
+		var self = this;
+		for(var i = 0, len = less.selector.length; i < len; i++) {
+			var array = [];
+			find(result, less.selector[i], self).forEach(function(c) {
+				array = array.concat(c.childrens);
+			});
+			result = array;
+			
+		}
+		return find(result, less, self);
+	}
 }).call(LatteView.prototype);
 (function() {
 	this.create = function(id) {

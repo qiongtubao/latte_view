@@ -19,6 +19,9 @@
 		},
 		function(cb) {
 			loader.loadAnimation("../animation.json", cb);
+		},
+		function(cb) {
+			loader.loadLcss("../animation.lcss", cb);
 		}
 	], function() {
 		var obj = latte_lib.object.create({
@@ -32,7 +35,8 @@
 			index: "basic",
 			basic: {
 				url: "../animation.lade",
-				data: obj
+				data: obj,
+				lcss: "../animation.lcss"
 			}
 		});
 	})

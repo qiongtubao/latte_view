@@ -15,7 +15,6 @@ var Controller = function(view, data) {
 		this.data = data;
 	}
 	if(!this.data) {
-		console.log(data, view.latte["data"]);
 		throw new Error("data " + view.latte["data"] + " Error");
 	}
 	this.dataEvents = {};

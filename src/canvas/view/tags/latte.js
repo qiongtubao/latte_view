@@ -1,12 +1,13 @@
 (function() {
-	var defaultType = {
+	var defaultStyle = {
 		backgroundColor: "#ffffff",
 
 		opacity: 1
 	}
 	this.draw = function(ctx, local, object) {
 		
-		var style = latte_lib.merger(defaultType, object.style);
+		var style = object.style.mergerDefault(defaultStyle);
+		console.log(style);
 		style.width = style.width || local.width;
 		style.height = style.height || local.height;
 		if(!style.width || !style.height) {
