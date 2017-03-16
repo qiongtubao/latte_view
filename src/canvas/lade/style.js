@@ -4,7 +4,7 @@ var Style = function(style) {
 	this.cache = {};
 	var self = this;
 	["x", "y", "width", "height", "backgroundColor", 
-	"zIndex", "lineWidth", "opacity", "position"].forEach(function(k) {
+	"zIndex", "lineWidth", "opacity", "position", "fontSize", "fontColor", "flex"].forEach(function(k) {
 		Object.defineProperty(self, k, {
 		  get: function() { return self.get(k); },
 		  set: function(newValue) { self.set(k, newValue) },
