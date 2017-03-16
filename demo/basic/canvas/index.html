@@ -13,7 +13,10 @@
 	var latteView = latte.require("latte_view");
 	var latte_lib = latte.require("latte_lib");
 	var obj = latte_lib.object.create({
-		name: "hello"
+		name: "hello",
+		click: function() {
+			console.log("cccc")
+		}
 	});
 	var canvas = latteView.create("canvas");
 	canvas.route({
