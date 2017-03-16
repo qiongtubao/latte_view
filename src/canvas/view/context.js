@@ -50,11 +50,11 @@ var Context = function(config, less) {
 				maxWidth = Math.max(maxWidth, (c.style.x || 0 ) + cache.width);
 			}
 			*/
-			if(cache.position == "absolute") {
+			if(c.style.position == "absolute") {
 				absolutes.push(c);
 				return;	
 			}
-			if(cache.flex == "row") {
+			if(object.style.flex == "row") {
 				offsetX += (c.style.x || 0) + cache.width;
 				maxHight = Math.max(maxHight, (c.style.y || 0 ) + cache.height);
 			}else{
@@ -83,14 +83,16 @@ var Context = function(config, less) {
 			if( c.style.zIndex != null) {
 				return;
 			}
-			if(cache.position == "absolute") {
+			if(c.style.position == "absolute") {
 				return;	
 			}
+			console.log(c,local.x + local.offsetX, local.y + local.offsetY)
 			var result = self.board.drawCache(c, {
 				x: local.x + local.offsetX,
 				y: local.y + local.offsetY
 			});
-			if(cache.flex == "row") {
+			console.log(c.style.flex,c.style.flex == "row");
+			if(object.style.flex == "row") {
 				local.offsetX += result.width || 0 ;	
 			}else{
 				local.offsetY += result.height || 0;	
@@ -123,9 +125,6 @@ var Context = function(config, less) {
 			y: me.style.y || 0,
 			width : maxWidth,
 			height: maxHight,
-			opacity: cache.opacity || 1,
-			position: me.style.position,
-			flex: me.style.flex,
 			tag: object.tag
 		};
 		object.cache.image = this.getImage(object.cache)

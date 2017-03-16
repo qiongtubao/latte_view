@@ -152,13 +152,13 @@ var Board = function(dom) {
 			//this.ctx.globalAlpha = style.opacity || 1;
 			//this.ctx.textAlign = "start" ;//start, end, left, right or center
 			//this.ctx.textBaseline = "alphabetic"; //top, hanging, middle, alphabetic, ideographic, bottom
-			this.ctx.font = [Math.min(style.height  , style.fontSize ) + "px"|| 10 + "px", style.font || "sans-serif"].join(" ");
-  			//console.log([Math.min(style.height  , style.fontSize ) || 10 + "px", style.font || "sans-serif"].join(" "));
-  			//this.ctx.font = "12px serif";
+			var fontSize = style.height? Math.min(style.height, style.fontSize): style.fontSize || 10;
+			this.ctx.font = [fontSize + "px", style.font || "sans-serif"].join(" ");
+  	
   			//this.ctx.direction = "inherit" ;//ltr, rtl, inherit
   			this.ctx.textBaseline = "top";
 			//this.ctx.font = "15px verdana";
-			this.ctx.fillStyle = "#000000";
+			this.ctx.fillStyle = style.fontColor || "#000000";
 			//this.ctx.fillText("aaaaa", 0, 0);
   			var result = verify(this.ctx.measureText.bind(this.ctx), this.ctx.fillText.bind(this.ctx));
 			

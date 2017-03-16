@@ -4,7 +4,9 @@
 	};
 	var latte_lib = require("latte_lib");
 	this.draw = function(ctx, local, object) {
+
 		var style = object.style.mergerDefault(defaultStyle);
+		console.log(style)
 		var result = ctx.drawText(local, style, object.text || "hello");
 		return result;
 	}
