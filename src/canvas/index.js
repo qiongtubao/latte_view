@@ -38,6 +38,7 @@ latte_lib.extends(LatteView, latte_lib.events);
 			}
 			o = o.parent;
 		}
+		console.log(latte, local.x, local.y);
 		if(local.x < event.x && event.x < (local.x + latte.status.width) && local.y < event.y &&  event.y < (local.y + latte.status.height)) {
 			return true;
 		}
@@ -48,7 +49,7 @@ latte_lib.extends(LatteView, latte_lib.events);
 			var o ;
 			for(var i = latte.childrens.length -1; i >=0; i--) {
 				var c = latte.childrens[i];
-				var n = find(c, event);
+				var n = findClick(c, event);
 				if(n) {
 					return n;
 				}

@@ -1,3 +1,3 @@
 latte <flex:"row">
 	label <fontSize:20> "hello" 
-	button "click"
+	button (click:"click") "click"
