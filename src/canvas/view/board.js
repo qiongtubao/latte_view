@@ -34,8 +34,14 @@ var Board = function(dom) {
 		this.ctx.beginPath();
 		//图片缓存
 		//this.ctx.putImageData(object.cache.image.data, local.x, local.y);
-		this.ctx.drawImage(object.cache.image, 0, 0, 
-				object.cache.width, object.cache.height, local.x + (object.style.x || 0), local.y + (object.style.y || 0), 
+		console.log(object.scrollLeft, 
+			object.scrollTop, 
+			object.style.width, 
+			object.style.height,
+			object.cache.image.width,
+			object.cache.image.height);
+		this.ctx.drawImage(object.cache.image, object.scrollLeft, object.scrollTop, 
+				object.style.width || object.cache.width, object.style.height || object.cache.height, local.x + (object.style.x || 0), local.y + (object.style.y || 0), 
 				object.style.width || object.cache.width, object.style.height || object.cache.height);
 		//this.ctx.drawImage(object.cache.image, local.x, local.y);
 		this.ctx.closePath();
@@ -172,7 +178,6 @@ var Board = function(dom) {
 			var lineWidth = config.lineWidth;
 			this._dom.width = width;
 			this._dom.height = height;
-			console.log(config);
 			var image = this.ctx.getImageData(config.x,config.y,width, height);
 			this._ctx.putImageData(image, 0,0);
 			var src = this._dom.toDataURL();

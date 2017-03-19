@@ -8,8 +8,8 @@ var LatteView = function(dom, lcss) {
 	this.dom = dom;
 	this.lcss = Lcss.create(this);
 	this.view = View.createContext({
-		width: 1000,
-		height: 1000
+		width: 3000,
+		height: 3000
 	}, this.lcss);
 	this.border = View.createBoard(dom, this.lcss);
 	this.width = dom.width;
@@ -38,7 +38,6 @@ latte_lib.extends(LatteView, latte_lib.events);
 			}
 			o = o.parent;
 		}
-		console.log(latte, local.x, local.y);
 		if(local.x < event.x && event.x < (local.x + latte.status.width) && local.y < event.y &&  event.y < (local.y + latte.status.height)) {
 			return true;
 		}
@@ -82,6 +81,7 @@ latte_lib.extends(LatteView, latte_lib.events);
 	}
 	this.addClickEvent = function() {
 		var self = this;
+		var clickStatus = null;
 		this.dom.addEventListener("click", function(event) {
 			var e = {
 				x: event.offsetX,
@@ -96,6 +96,56 @@ latte_lib.extends(LatteView, latte_lib.events);
 				o = o.parent;
 			}
 		});
+		this.dom.addEventListener("mousedown", function() {
+			var e = {
+				x: event.offsetX,
+				y: event.offsetY
+			};
+			var result = self.findClickObject(e);
+			e.object = result;
+			var o = result;
+			while(!event.stop && o.parent) {
+				o.emit("mousedown", event);
+				o = o.parent;
+			}
+			clickStatus = e;
+		});
+		this.dom.addEventListener("mousemove", function(event) {
+			if(clickStatus) {
+				var o = clickStatus.object;
+				var event = {
+					startX: clickStatus.x,
+					startY: clickStatus.y,
+					lastX: clickStatus.lastX || clickStatus.x,
+					lastY: clickStatus.lastY || clickStatus.y,
+					x: event.offsetX,
+					y: event.offsetY,
+					object: clickStatus.object
+				};
+				while(!event.stop && o.parent) {
+					o.emit("mousemove", event);
+					o = o.parent;
+				}
+				clickStatus.lastX = event.offsetX;
+				clickStatus.lastY = event.offsetY;
+			}
+		});
+		this.dom.addEventListener("mouseup", function(event) {
+			var o = clickStatus.object;
+			var event = {
+				startX: clickStatus.x,
+				startY: clickStatus.y,
+				x: event.offsetX,
+				y: event.offsetY,
+				object: clickStatus.object
+			};
+			while(!event.stop && o.parent) {
+				o.emit("mouseup", event);
+				o = o.parent;
+			}
+			clickStatus = null;
+		});
+
 	}
 	this.route = function(object) {
 		this._route = object;
@@ -164,9 +214,11 @@ latte_lib.extends(LatteView, latte_lib.events);
 			});
 			
 		});
-		//setTimeout(function() {
-		//	self.draw();
-		//}, 1000);
+		/**
+		setTimeout(function() {
+			self.draw();
+		}, 1000/16);
+		*/
 	}
 	/**
 	var findOne = function(latte, view, less) {
