@@ -46,8 +46,17 @@ latte_lib.extends(Loader, latte_lib.events);
 	}
 	var loadImage = function(url, callback) {
 		var image = new Image();
+		image.status = "loading";
 		image.src = url;
-		image.onload = callback;
+		image.onload = function() {
+			callback(null, image);
+		};
+		image.onerror = function(err) {
+			callback(err);
+		}
+		image.onabort = function(err) {
+			callback(new Error("onabort"))
+		}
 		//image.setAttribute("async","true");
 		return image;
 	}
@@ -63,15 +72,18 @@ latte_lib.extends(Loader, latte_lib.events);
 		}
 		callback && self.once(url, callback);
 		var image = loadImage(url, function(err) {
+			
+			
 			if(err) {
 				delete self.cache[url];
 				self.emit(url, err);
 				return;
 			}
+			
 			delete image.status;
 			self.emit(url, null, image, 1);
 		});
-		image.status = "loading";
+		
 		self.cache[url] = image;
 		return image;
 	}

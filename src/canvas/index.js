@@ -38,7 +38,6 @@ latte_lib.extends(LatteView, latte_lib.events);
 			}
 			o = o.parent;
 		}
-		console.log(latte, local.x, local.y);
 		if(local.x < event.x && event.x < (local.x + latte.status.width) && local.y < event.y &&  event.y < (local.y + latte.status.height)) {
 			return true;
 		}
@@ -117,6 +116,8 @@ latte_lib.extends(LatteView, latte_lib.events);
 				var event = {
 					startX: clickStatus.x,
 					startY: clickStatus.y,
+					lastX: clickStatus.lastX || clickStatus.x,
+					lastY: clickStatus.lastY || clickStatus.y,
 					x: event.offsetX,
 					y: event.offsetY,
 					object: clickStatus.object
@@ -125,6 +126,8 @@ latte_lib.extends(LatteView, latte_lib.events);
 					o.emit("mousemove", event);
 					o = o.parent;
 				}
+				clickStatus.lastX = event.offsetX;
+				clickStatus.lastY = event.offsetY;
 			}
 		});
 		this.dom.addEventListener("mouseup", function(event) {
@@ -211,9 +214,11 @@ latte_lib.extends(LatteView, latte_lib.events);
 			});
 			
 		});
-		//setTimeout(function() {
-		//	self.draw();
-		//}, 1000);
+		/**
+		setTimeout(function() {
+			self.draw();
+		}, 1000/16);
+		*/
 	}
 	/**
 	var findOne = function(latte, view, less) {

@@ -29,12 +29,14 @@ var Lade = require("./lade");
 		}
 		return null;
 	}
-		var Style = require("./style");
+		var Style = require("./style")
+			, Attribute = require("./attribute");
+			var latteObjectAttributes = ["scrollTop", "scrollLeft"];
 		var LadeObject = function(object) {
 			this.tag = object.tag || "latte";
 			this.id = object.id ;
 			this.style = new Style(object.style);
-			this.attribute = object.attribute || {};
+			this.attribute = new Attribute(object.attribute);
 			this.latte = object.latte || {};
 			this.text = object.text;
 			this.childrens = [];
@@ -58,12 +60,42 @@ var Lade = require("./lade");
 				self.changeStyle && self.changeStyle;
 				
 			});
+			this.attribute.on("change", function() {
+				self.deleteCache();
+			});
+			this._scrollTop = 0;
+			this._scrollLeft = 0;
+			var self = this;
+			
+			latteObjectAttributes.forEach(function(k) {
+				Object.defineProperty(self, k, {
+				  	get: function() { return self["_"+k]; },
+				  	set: function(newValue) { 
+					  	newValue = newValue - 0;
+				  		if(isNaN(newValue) ) {
+				  			return;
+				  		} 
+				  		if(newValue == self["_"+k]) {
+				  			return;
+				  		}
+				  		self["_"+k] = newValue < 0? 0 : newValue; 
+				  		//self.deleteCache();
+			  		},
+				  enumerable: true,
+				  configurable: true
+				});
+			});
+			
 		};
 		latte_lib.extends(LadeObject, latte_lib.events);
 		(function() {
 			this.deleteCache = function() {
 				var o = this;
+				var zIndex = o.style.zIndex;
 				while(o) {
+					if(o.style.zIndex != zIndex) {
+						break;
+					}
 					delete o.cache;
 					o = o.parent;
 				}

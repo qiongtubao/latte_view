@@ -54,7 +54,7 @@ var Context = function(config, less) {
 				absolutes.push(c);
 				return;	
 			}
-			if(object.style.flex == "row") {
+			if(object.style.flex == "row") {	
 				offsetX += (c.style.x || 0) + cache.width;
 				maxHight = Math.max(maxHight, (c.style.y || 0 ) + cache.height);
 			}else{
@@ -62,13 +62,15 @@ var Context = function(config, less) {
 				maxWidth = Math.max(maxWidth, (c.style.x || 0 ) + cache.width);
 			}
 		});
-
+		maxWidth = maxWidth || offsetX;
+		maxHight = maxHight || offsetY;
 		var self = this;
 
 		self.board.clean();
 		var me = object;
 		var tagHandle = require("./tags/"+object.tag);
 		var cache = tagHandle.draw(this.board,  {x:  0 , y:  0, width: maxWidth, height: maxHight}, me);
+		console.log(object.tag, object.attribute, maxWidth, maxHight, cache.width, cache.height);
 		maxWidth = cache.width || Math.max(maxWidth, offsetX);
 		maxHight = cache.height || Math.max(maxHight, offsetY);
 
@@ -86,12 +88,11 @@ var Context = function(config, less) {
 			if(c.style.position == "absolute") {
 				return;	
 			}
-			console.log(c,local.x + local.offsetX, local.y + local.offsetY)
 			var result = self.board.drawCache(c, {
 				x: local.x + local.offsetX,
 				y: local.y + local.offsetY
 			});
-			console.log(c.style.flex,c.style.flex == "row");
+			
 			if(object.style.flex == "row") {
 				local.offsetX += result.width || 0 ;	
 			}else{
@@ -119,7 +120,6 @@ var Context = function(config, less) {
 				y:  0
 			});
 		});
-		console.log(cache.x, cache.y);
 		object.cache = {
 			x: me.style.x || 0,
 			y: me.style.y || 0,
