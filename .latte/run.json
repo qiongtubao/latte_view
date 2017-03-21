@@ -1,0 +1,17 @@
+{
+	"commands": {
+		"watch": {
+			"params": [],
+			"optional": {
+
+			}
+		},
+		"web": {
+			"params": [],
+			"optional":  {
+				
+			}
+		}
+
+	}
+}
