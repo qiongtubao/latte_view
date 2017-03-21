@@ -1,0 +1,85 @@
+<html>
+<meta charset="UTF-8">
+<head>
+
+</head>
+<body>
+<canvas id="canvas" width=3000 height=3000>
+</canvas>
+</body>
+<script type="text/javascript" src="../../latte_lib.js"></script>
+<script type="text/javascript" src="../../latte_view_canvas.js"></script>
+<script>
+	var latteView = latte.require("latte_view");
+	var latte_lib = latte.require("latte_lib");
+	var loader = latte.require("latte_view/loader");
+	latte_lib.async.parallel([
+		function(cb) {
+			loader.loadImageSync("../images/0.jpg",cb);
+		},
+		function(cb) {
+			loader.loadImageSync("../images/1.jpg", cb);
+		},
+		function(cb) {
+			loader.loadImageSync("../images/2.jpg", cb);
+		},
+		function(cb) {
+			loader.loadImageSync("../images/3.jpg",cb);
+		},
+		function(cb) {
+			loader.loadImageSync("../images/4.jpg", cb);
+		},
+		function(cb) {
+			loader.loadImageSync("../images/5.jpg", cb);
+		},
+		function(cb) {
+			loader.loadImageSync("../images/6.jpg",cb);
+		},
+		function(cb) {
+			loader.loadImageSync("../images/7.jpg", cb);
+		},
+		function(cb) {
+			loader.loadImageSync("../images/8.jpg", cb);
+		},
+		function(cb) {
+			loader.loadImageSync("../images/9.jpg",cb);
+		},
+		function(cb) {
+			loader.loadImageSync("../images/10.jpg", cb);
+		},
+		function(cb) {
+			loader.loadImageSync("../images/11.jpg", cb);
+		},
+		function(cb) {
+			loader.loadImageSync("../images/12.jpg",cb);
+		},
+		function(cb) {
+			loader.loadImageSync("../images/13.jpg", cb);
+		},
+		function(cb) {
+			loader.loadImageSync("../images/14.jpg", cb);
+		}
+	], function() {
+		var obj = latte_lib.object.create({
+			name: "hello",
+			mousemove: function(e) {
+				console.log(e, this);
+				e.dom.scrollLeft +=  e.x - e.lastX;
+				e.dom.scrollTop +=  e.y - e.lastY;
+				console.log(e.dom.scrollLeft, e.dom.scrollTop);
+				canvas.draw();
+			}
+		});
+		var canvas = latteView.create("canvas");
+		canvas.route({
+			index: "basic",
+			basic: {
+				url: "../move.lade",
+				data: obj
+			}
+		});
+	})
+	
+	
+</script>
+</html>

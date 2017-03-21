@@ -1,0 +1,46 @@
+<html>
+<meta charset="UTF-8">
+<head>
+
+</head>
+<body>
+<div id="canvas">
+</div>
+</body>
+<script type="text/javascript" src="../../latte_lib.js"></script>
+<script type="text/javascript" src="../../latte_view_html5.js"></script>
+<script>
+	var latteView = latte.require("latte_view");
+	var latte_lib = latte.require("latte_lib");
+	var obj = latte_lib.object.create({
+		name: "hello",
+		click: function() {
+			route.set("index", "test")
+		}
+	});
+	var route = latte_lib.object.create(
+		{
+			index: "basic",
+			basic: {
+				url: "../basic.lade",
+				data: {
+					click: function() {
+						route.set("index", "test")
+					}
+				}
+			},
+			test: {
+				url: "../test.lade",
+				data: {
+					text: "fick"
+					click: function() {
+						route.set("index", "basic")
+					}
+				}
+			}
+		}
+	)
+	var canvas = latteView.create("canvas");
+	canvas.route(route);
+</script>
+</html>
