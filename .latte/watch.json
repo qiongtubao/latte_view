@@ -1,0 +1,8 @@
+{
+	"paths": ["./src/canvas", "./src/lib", "./src/html5"],
+	"change": {
+		"buildJs": {
+			
+		}
+	}
+}

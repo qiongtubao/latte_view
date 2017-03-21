@@ -161,4 +161,7 @@ var Lade = require("./lade");
 		var lade = new LadeObject(object);
 		return lade;
 	}
+	this.isLade = function(o) {
+		return o instanceof LadeObject;
+	}
 }).call(module.exports);
