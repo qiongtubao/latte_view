@@ -1,6 +1,6 @@
 var  latte_lib = require("latte_lib")
 		, LatteObject = latte_lib.object
-		, language = require("../../lib/language.js");
+		, lib = require("../../lib/index.js");
 	/**
 		<p>{{name}}</p>
 		<p latte-value="{{name}}"></p>
@@ -39,7 +39,7 @@ var  latte_lib = require("latte_lib")
 			}
 			var templateLanguage = function(template, options) {
 				var data = template;
-				var key2s = language.stringRegExp(data, "!#", "#!");
+				var key2s = lib.stringRegExp(data, "!#", "#!");
 				//for(var i in key2s) {
 				key2s.forEach(function(i) {
 					data = data.replace(new RegExp("!#"+i+"#!","igm"), options[i] || i);
@@ -53,7 +53,7 @@ var  latte_lib = require("latte_lib")
 
 				var doChange = function(str) {
 					var text = latte_lib.format.templateStringFormat(str, toJSON(data));
-					text = templateLanguage(text, language.toJSON());
+					text = templateLanguage(text, lib.language.toJSON());
 					//如果有dom的话可能会修改掉dom  比如button  里面有span  会被覆盖掉   暂时没想到其他简单的解决方案
 					
 					var list = [];
@@ -75,8 +75,8 @@ var  latte_lib = require("latte_lib")
 				};
 				var changeFunc = function(str) {
 					//var keys = LatteObject.stringRegExp(str, "`{{", "}}`");
-					var key1s = language.stringRegExp(str, "{{", "}}");
-					var key2s = language.stringRegExp(str, "!#" , "#!" );
+					var key1s = lib.stringRegExp(str, "{{", "}}");
+					var key2s = lib.stringRegExp(str, "!#" , "#!" );
 					doChange(str);
 					key1s.forEach(function(key) {
 						
@@ -86,7 +86,7 @@ var  latte_lib = require("latte_lib")
 					});
 					
 					if(key2s.length) {
-						language.on("change", function(value, old) {
+						lib.language.on("change", function(value, old) {
 							doChange(str);
 						});
 					}
@@ -94,12 +94,12 @@ var  latte_lib = require("latte_lib")
 					//var keys = LatteObject.
 					
 				}
-			var latteValue = view.attr("latte-html");
+			var latteValue = view.attr("latte-text");
 			if(latteValue) {
 				changeFunc(latteValue);
 			}else if(view.childNodes.length == 1 && view.childNodes[0].nodeType == 3) {
 				//text 转换成 latte-value
-				view.attr("latte-html", view.node().value);
+				view.attr("latte-text", view.node().value);
 				changeFunc(view.text());
 			}
 		}

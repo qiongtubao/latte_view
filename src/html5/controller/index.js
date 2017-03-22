@@ -72,14 +72,23 @@ var latte_lib = require("latte_lib")
 			var o = LatteObject.create(this.data);
 			var latteOff = o.off.bind(o);
 			for(var i in this.dataEvents) {
+				this.dataEvents[i].forEach(function(func) {
+					latteOff(i, func);
+				});
+				delete this.dataEvents[i];
+			}
+			var viewOff = this.view.off.bind(this.view);
+			for(var i in this.viewEvents) {
 				this.viewEvents[i].forEach(function(func) {
 					viewOff(i, func);
 				});
 				delete this.viewEvents[i];
 			}
-			for(var i = 0, len = this.view.children.length; i < len; i ++) {
+
+			for(var i = 0, len = this.view.children.length; i < len; i++) {
 				Controller.remove(this.view.children[i]);
 			}
+			
 			delete this.dom.latteController;
 			this.emit("close");
 		}

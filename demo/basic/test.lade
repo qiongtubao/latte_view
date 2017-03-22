@@ -1,3 +1,5 @@
 latte <flex:"row">
-	label <fontSize:20> "bye" 
+	label <fontSize:20> "{{text}}" 
+	input (duplex:"value")
+	label (text:"{{value}}")
 	button (click:"click") "click"
