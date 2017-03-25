@@ -94,12 +94,12 @@ var  latte_lib = require("latte_lib")
 					//var keys = LatteObject.
 					
 				}
-			var latteValue = view.attr("latte-text");
+			var latteValue = view.latte("text");
 			if(latteValue) {
 				changeFunc(latteValue);
 			}else if(view.childNodes.length == 1 && view.childNodes[0].nodeType == 3) {
 				//text 转换成 latte-value
-				view.attr("latte-text", view.node().value);
+				view.latte("text", view.node().value);
 				changeFunc(view.text());
 			}
 		}

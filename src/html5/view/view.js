@@ -1,9 +1,11 @@
 var Utils = require("./viewUtils");
 var View = function(dom) {
 	this.dom = dom;
+	this.tag = dom.tagName;
 };
 (function() {
 	this.latte = function(name, value) {
+		
 		if(arguments.length < 2) {
 			if(latte_lib.isString(name)) {
 				return Utils.getAttr.call(this.node(), "latte-" + name);
@@ -348,12 +350,24 @@ var View = function(dom) {
 	var tags = {
 		latte: "div"
 	}
+	this.createObject = function(object) {
+
+	} 
 	this.ladeCreateDom = function(lade) {
+		var handle = require("./tags/"+lade.tag);
+		if(handle) {
+			lade = handle.init(lade);
+		}
+		console.log(lade);
 		var element = document.createElement(lade.tag);
 		var view = new View(element);
-		view.attr(lade.attribute.data);
-		view.style(lade.style.data);
-		view.latte(lade.latte);
+		view.id = lade.id;
+		lade.classed().forEach(function(k) {
+			view.classed(k, 1);
+		});
+		view.attr(lade.attr());
+		view.style(lade.style());
+		view.latte(lade.latte());
 		view.text(lade.text);
 		lade.childrens.forEach(function(c) {
 			var v = self.ladeCreateDom(c);

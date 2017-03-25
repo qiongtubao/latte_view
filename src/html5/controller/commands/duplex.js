@@ -3,11 +3,11 @@ var LatteObject = require("latte_lib").object;
 	(function() {
 		var changeTags = ["input", "select", "textarea"];
 		this.after = function(data, dom, controller) {
-			var duplex = dom.attr("latte-duplex");
+			var duplex = dom.latte("duplex");
 			if(duplex) {
 				var latteObject = LatteObject.create(data);
 				var changeDomFunc;
-				if(changeTags.indexOf(dom.node().tagName.toLowerCase()) != -1) {
+				if(changeTags.indexOf(dom.tag.toLowerCase()) != -1) {
 					var domChange = function(value) {
 						if(controller.closed) {
 							return controller.unbind("view", "change", domChange);
