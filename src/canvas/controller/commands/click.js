@@ -1,7 +1,7 @@
 var Command = {};
 (function() {
 	this.after = function(data, dom, controller) {
-		var clickAttribute = dom.latte["click"];
+		var clickAttribute = dom.latte("click");
 		if(clickAttribute) {
 			var clickEvent = function(e) {
 				if(controller.closed) {
