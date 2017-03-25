@@ -35,21 +35,22 @@ var Lade = require("./lade");
 		var LadeObject = function(object) {
 			this.tag = object.tag || "latte";
 			this.id = object.id ;
-			this.style = new Style(object.style);
-			this.attribute = new Attribute(object.attribute);
-			this.latte = object.latte || {};
+			this.glasss = object.glasss || [];
+			this._style = new Style(object.style);
+			this._attribute = new Attribute(object.attribute);
+			this._latte = object.latte || {};
 			this.text = object.text;
 			this.childrens = [];
 			if(object.latteView) {
 				this.updateLatteView(object.latteView);
 			}
-			this.style.on("zIndex", function() {
+			this._style.on("zIndex", function() {
 				self.changezIndex && self.changezIndex();
 			});
-			this.style.on("change", function() {
+			this._style.on("change", function() {
 				self.changeStyle && self.changeStyle();
 			});
-			this.style.on("updateCache", function(cache, old) {
+			this._style.on("updateCache", function(cache, old) {
 				if(Object.keys(cache) == 0 && Object.keys(old) == 0) {
 					return;
 				}
@@ -60,7 +61,7 @@ var Lade = require("./lade");
 				self.changeStyle && self.changeStyle;
 				
 			});
-			this.attribute.on("change", function() {
+			this._attribute.on("change", function() {
 				self.deleteCache();
 			});
 			this._scrollTop = 0;
@@ -89,6 +90,71 @@ var Lade = require("./lade");
 		};
 		latte_lib.extends(LadeObject, latte_lib.events);
 		(function() {
+			this.latte = function(key, value) {
+				var n = arguments.length;
+				if(n == 1){
+					if(latte_lib.isObject(key)) {
+						for(var i in key) {
+							this.latte(i, key[i]);
+						}
+					}
+					if(latte_lib.isString(key)) {
+						return this._latte[key];
+					}
+				}else if(n == 0) {
+					return this._latte;
+				}else{
+					this._latte[key] = value;
+				}
+				
+			}
+			this.attr = function(key, value) {
+				var n = arguments.length;
+				if(n == 1) {
+					if(latte_lib.isObject(key)) {
+						for(var i in key) {
+							this.attr(i, key[i]);
+						}
+					}
+					if(latte_lib.isString(key)) {
+						return this._attribute[key];
+					}
+				}else if(n == 0){
+					return this._attribute.data;
+				}else {
+					this._attribute[key] = value;
+				}
+			}
+			this.style =function(key, value) {
+				var n = arguments.length;
+				if(n == 1) {
+					if(latte_lib.isObject(key)) {
+						for(var i in key) {
+							this.style(i, key[i]);
+						}
+					}
+					if(latte_lib.isString(key)) {
+						return this._style[key];
+					}
+				}else if(n == 0) {
+					return this._style.data;
+				}else{
+					this._style[key] = value;
+				}
+			}
+			this.classed = function(key, value) {
+				var n = arguments.length;
+				if(n == 0) {
+					return this.glasss;
+				}
+				var index = this.glasss.indexOf(key);
+				if(value && index == -1) {
+					this.glasss.push(key);
+				}else if(!value && index != -1) {
+					this.splice(index, 1);
+				}
+			}
+
 			this.deleteCache = function() {
 				var o = this;
 				var zIndex = o.style.zIndex;
@@ -158,7 +224,7 @@ var Lade = require("./lade");
 			}
 		}).call(LadeObject.prototype);
 	this.create = function(object) {
-		var lade = new LadeObject(object);
+		var lade = objectToLade(object);
 		return lade;
 	}
 	this.isLade = function(o) {
