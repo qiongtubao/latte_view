@@ -1,6 +1,7 @@
 var latte_lib = require("latte_lib");
 var lade = require("../lade");
 var lcss = require("../lcss");
+var path = require("./path");
 var Loader = function() {
 	this.cache = {};
 };
@@ -42,7 +43,8 @@ latte_lib.extends(Loader, latte_lib.events);
 		this.loadFile(url, callback, lcss.parse);
 	}
 	this.loadView = function(url, callback) {
-		this.loadFile(url, callback, lade.parse);
+		//this.loadFile(url, callback, lade.parse);
+		lade.loadFile(url, callback);
 	}
 	var loadImage = function(url, callback) {
 		var image = new Image();
@@ -90,5 +92,6 @@ latte_lib.extends(Loader, latte_lib.events);
 	this.loadAnimation = function(url, callback) {
 		this.loadFile(url, callback, JSON.parse.bind(JSON));
 	}
+	this.pathJoin = path.join;
 }).call(Loader.prototype);
 module.exports = new Loader();
