@@ -209,7 +209,7 @@
 
 		var classsArray = line.split(".");
 		if(classsArray.length > 1) {
-			result.glass = classsArray.slice(1);
+			result.glasss = classsArray.slice(1);
 			line = classsArray[0];
 		} 
 		var idArray = line.split("#");

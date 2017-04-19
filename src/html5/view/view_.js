@@ -1,73 +1,70 @@
-
-	var Utils = require("./viewUtils.js")
-		, latte_lib = require("latte_lib");
-	var View = function(dom) {
-		this.dom = dom;
-		this.tag = dom.tagName;
-	};
-	(function() {
-		this.latte = function(name, value) {
+var Utils = require("./viewUtils");
+var View = function(dom) {
+	this.dom = dom;
+	this.tag = dom.tagName;
+};
+(function() {
+	this.latte = function(name, value) {
 		
-			if(arguments.length < 2) {
-				if(latte_lib.isString(name)) {
-					return Utils.getAttr.call(this.node(), "latte-" + name);
-				}
-				for(value in name) {
-					Utils.attr("latte-" + value, name[value]).call(this.node(), this.getData());
-				}
-				return this;
+		if(arguments.length < 2) {
+			if(latte_lib.isString(name)) {
+				return Utils.getAttr.call(this.node(), "latte-" + name);
 			}
-			Utils.attr("latte-" + name, value).call(this.node(), this.getData());
+			for(value in name) {
+				Utils.attr("latte-" + value, name[value]).call(this.node(), this.getData());
+			}
 			return this;
 		}
-		/**
-			@attr 
-			@param name String or Object
-			@param value String 
-			@return   String or View
-			@example
-				var View = require("latte_dom").create;
-				var view = View("css select");
-				view.attr("width", 100);
-		*/
-
-		this.attr = function(name, value) {
-			if(arguments.length < 2) {
-				if(latte_lib.isString(name)) {
-					return Utils.getAttr.call(this.node(), name);
-				}
-				for(value in name) {
-					Utils.attr(value, name[value]).call(this.node(), this.getData());
-				}
-				return this;
+		Utils.attr("latte-" + name, value).call(this.node(), this.getData());
+		return this;
+	}
+	/**
+		@method attr 
+		@param name String or Object
+		@param value String 
+		@return   String or View
+		@example
+			var View = require("latte_dom").create;
+			var view = View("css select");
+			view.attr("width", 100);
+	*/
+	this.attr = function(name, value) {
+		if(arguments.length < 2) {
+			if(latte_lib.isString(name)) {
+				return Utils.getAttr.call(this.node(), name);
 			}
-			Utils.attr(name, value).call(this.node(), this.getData());
+			for(value in name) {
+				Utils.attr(value, name[value]).call(this.node(), this.getData());
+			}
 			return this;
 		}
-		
-		/**
-			@attr 
-			@param name String or Object
-			@param value String 
-			@return   Boolean or View
-			@example
-				var View = require("latte_dom").create;
-				var view = View("css select");
-				view.classed("latte_input", true);
-		*/
-		this.classed = function(name, value) {
-			if(arguments.length < 2) {
-				if(latte_lib.isString(name)) {
-					var node = this.node(),
-						n = (name = Utils.split_classes(name)).length, 
-						i = -1;
-					if(value = node.classList) {
+		Utils.attr(name, value).call(this.node(), this.getData());
+		return this;
+	}
+	/**
+		@method style 
+		@param name String or Object
+		@param value String 
+		@param priority
+		@return   Boolean or View
+		@example
+			var View = require("latte_dom").create;
+			var view = View("css select");
+			view.classed("latte_input", true);
+	*/
+	this.classed = function(name, value) {
+		if(arguments.length < 2) {
+			if(latte_lib.isString(name)) {
+				var node = this.node(),
+					n = (name = Utils.split_classes(name)).length,
+					i = -1;
+					if(vaue = node.classList) {
 						while(++i < n) {
 							if(!value.contains(name[i])) {
 								return false;
 							}
-						} 	
-					}else{
+						}
+					}else {
 						value = Utils.getAttr("class").call(node, this.getData());
 						while(++i < n) {
 							if(!Utils.classedRe(name[i]).test(value)) {
@@ -76,48 +73,38 @@
 						}
 					}
 					return true;
-				}
-				for(value in name) {
-					Utils.classed(value, name[value]).call(this.node(), this.getData());
+			}
+			for(value in name) {
+				Utils.classed(value, name[value].call(this.node(), this.getData()));
+			}
+			return this;
+		}
+		Utils.classed(name, value).call(this.node());
+		return this;
+	}
+	
+	this.style = function(name, value, priority) {
+		var n = arguments.length;
+		if(n < 3) {
+			if(!latte_lib.isString(name)) {
+				if( n < 2) value = "";
+				for(priority in name) {
+					Utils.style(priority, name[priority], value).call(this.node(), this.getData());
+					
 				}
 				return this;
 			}
-			Utils.classed(name, value).call(this.node());
-			return this;
-		}
-		/**
-			@method style 
-			@param name String or Object
-			@param value String 
-			@param priority
-			@return   Boolean or View
-			@example
-				var View = require("latte_dom").create;
-				var view = View("css select");
-				view.classed("latte_input", true);
-		*/
-		this.style = function(name, value, priority) {
-			var n = arguments.length;
-			if(n < 3) {
-				if(!latte_lib.isString(name)) {
-					if( n < 2) value = "";
-					for(priority in name) {
-						Utils.style(priority, name[priority], value).call(this.node(), this.getData());
-						
-					}
-					return this;
-				}
-				if(n < 2) {
-					var node = this.node();
-					return Utils.window(node).getComputedStyle(node, null).getPropertyValue(name);
-				}
-				priority = "";
-				
+			if(n < 2) {
+				var node = this.node();
+				return Utils.window(node).getComputedStyle(node, null).getPropertyValue(name);
 			}
-			Utils.style(name, value, priority).call(this.node(), this.getData());
-			return this;
+			priority = "";
+			
 		}
-		/**
+		Utils.style(name, value, priority).call(this.node(), this.getData());
+		return this;
+	}
+	/**
 			@method text
 			@param value
 			@return String or Views
@@ -308,9 +295,6 @@
 		this.node = function() {
 			return this.dom;
 		}
-		this.getChildren = function(index) {
-			return View.create(this.dom.children[index]);
-		}
 		Object.defineProperty(this, "children" , {
 			get: function() {
 				return this.dom.children;
@@ -329,20 +313,7 @@
 				this.dom.value = value;
 			}
 		});
-		/**
-		this.insertBefore = function(o) {
-			return this.dom.insertBefore(o);
-		}
-		this.appendChild = function(o) {
-			return this.dom.appendChild(o);
-		}
-		this.removeChild =  function(o) {
-			return this.dom.removeChild(o);
-		}
-		this.removeAll = function() {
-			this.dom.innerHTML = "";
-		}
-		*/
+		
 		this.insertBefore = function(o) {
 			if(View.isView(o)) {
 				return this.dom.insertBefore(o.node());
@@ -364,50 +335,48 @@
 		this.removeAll = function() {
 			this.dom.innerHTML = "";
 		}
+
 		
-	}).call(View.prototype);
-	(function() {
-		var self = this;
-		this.create = function(dom) {
-			if(latte_lib.isString(dom)) {
-				dom = Utils.select(dom, document);
-			}
-			return new View(dom);
+
+}).call(View.prototype);
+(function() {
+	this.create = function(dom) {
+		if(latte_lib.isString(dom)) {
+			dom = Utils.select(dom, document);
 		}
-		this.ladeCreateDom = function(lade) {
-			var handle = require("./tags/"+lade.tag);
-			if(handle) {
-				lade = handle.init(lade);
-			}
-			console.log(lade);
-			var element = document.createElement(lade.tag);
-			var view = new View(element);
-			view.id = lade.id;
-			lade.classed().forEach(function(k) {
-				view.classed(k, 1);
-			});
-			view.attr(lade.attr());
-			view.style(lade.style());
-			view.latte(lade.latte());
-			view.text(lade.text);
-			lade.childrens.forEach(function(c) {
-				var v = self.ladeCreateDom(c);
-				view.appendChild(v);
-			});
-			return view;
+		return new View(dom);
+	}
+	var self = this;
+	var tags = {
+		latte: "div"
+	}
+	this.createObject = function(object) {
+
+	} 
+	this.ladeCreateDom = function(lade) {
+		var handle = require("./tags/"+lade.tag);
+		if(handle) {
+			lade = handle.init(lade);
 		}
-		this.isView = function(o) {
-			return o instanceof View;
-		}
-		this.indexOf = function(array, view) {
-			var index = -1;
-			for(var i = 0, len = array.length; i < len; i++) {
-				var v = array[i];
-				if(v.dom = view.dom) {
-					return i;
-				}
-			}
-			return index;
-		}
-	}).call(View);
-	module.exports = View;
+		console.log(lade);
+		var element = document.createElement(lade.tag);
+		var view = new View(element);
+		view.id = lade.id;
+		lade.classed().forEach(function(k) {
+			view.classed(k, 1);
+		});
+		view.attr(lade.attr());
+		view.style(lade.style());
+		view.latte(lade.latte());
+		view.text(lade.text);
+		lade.childrens.forEach(function(c) {
+			var v = self.ladeCreateDom(c);
+			view.appendChild(v);
+		});
+		return view;
+	}
+	this.isView = function(o) {
+		return o instanceof View;
+	}
+}).call(View);
+module.exports = View;

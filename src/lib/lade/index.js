@@ -1,7 +1,11 @@
 var latte_lib = require("latte_lib");
 var Lade = require("./lade");
 (function() {
+	var self = this;
 	var objectToLade = function(data) {
+		if(self.isLade(data)) {
+			return data;
+		}
 		var ladeObject = new LadeObject(data);
 		if(data.childrens) {
 			data.childrens.forEach(function(c) {
@@ -12,7 +16,7 @@ var Lade = require("./lade");
 		
 		return ladeObject;
 	}
-	this.parse = function(str) {
+	var parse = this.parse = function(str) {
 		try {
 			var data = JSON.parse(str);
 		 	return objectToLade(data);
@@ -229,5 +233,56 @@ var Lade = require("./lade");
 	}
 	this.isLade = function(o) {
 		return o instanceof LadeObject;
+	}
+	/**
+		现在只有存在一层
+	*/
+	this.loadFile = function(file, callback) {
+		var loader = require("../loader/index.js");
+		loader.loadFile(file, function(err, str) {
+			var funcs = [];
+			var endIndex = 0;
+			var startIndex = 0;
+			while((startIndex = str.indexOf("require(", endIndex))!= -1) {
+				
+				(function() {
+					endIndex = str.indexOf(")", startIndex);
+					var filename = str.substring(startIndex+8, endIndex);
+					funcs.push(function(cb) {
+						loader.loadFile(loader.pathJoin(file, ".." ,filename), function(err, str) {
+							cb( err, {
+								filename: filename,
+								data: str
+							});
+						});
+					});
+				})();
+				
+			}
+			if(funcs.length == 0) {
+				return callback(null, parse(str));
+			}
+			latte_lib.async.parallel(funcs, function(err, data) {
+				if(err) {
+					return callback(err);
+				}
+				data.forEach(function(d) {
+					var rf = "require(" +d.filename + ")";
+					var index = str.indexOf(rf);
+					if(index == -1) {
+						return console.log("code error ", rf, index);
+					}
+					var nindex = str.lastIndexOf("\n", index) || 0;
+					var n = str.substring(nindex, index);
+					var nd = d.data.split("\n").map(function(o) {
+						return n + o;
+					}).join("\n");
+					str = str.substring(0, nindex) + nd + str.substring(index + rf.length);
+				});
+				console.log(str);
+				return callback(null, parse(str));
+			})
+			;
+		});
 	}
 }).call(module.exports);
