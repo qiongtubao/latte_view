@@ -1,8 +1,0 @@
-latte <flex:"row">
-	label <fontSize:20> "{{text}}" 
-	input (duplex:"value")
-	label (text:"{{value}}",glass:"{{color}}")
-	image (src:"{{src}}",show: "show")
-	latte (list:"list")
-		latte (text:"{{value}}")
-	button (click:"click") "click"
