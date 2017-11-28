@@ -1,1 +1,0 @@
-../build/0.0.1/canvas/latte_view.js

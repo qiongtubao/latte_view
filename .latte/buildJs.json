@@ -1,41 +1,48 @@
 {
-	"keys": {
-
+	"opts": {
+		"buildPath": "./build",
+		"htmlPath": "./html",
+		"jsFileName": "latte_view"
 	},
-	"build": [
-		{
-			"command": "three",
-			"types": "js",
-			"files": {
-				"./src/canvas": "latte_view",
-				"./src/lib": "latte_view/lib"
-			},
-			"out": "./build/{{version}}/canvas/{{name}}.js"
-		},
-		{
-			"command": "mini",
-			"type": "js",
-			"in": ["./build/{{version}}/canvas/{{name}}.js"],
-			"out": ["./build/canvas/{{name}}.js"]
-		},
-		{
-			"command": "three",
-			"type": "js",
-			"files": {
-				"./src/html5": "latte_view",
-				"./src/lib": "latte_view/lib"
-			},
-			"out": "./build/{{version}}/html5/{{name}}.js"
-		},
-		{
-			"command": "mini",
-			"type": "js",
-			"in": ["./build/{{version}}/html5/{{name}}.js"],
-			"out": ["./build/html5/{{name}}.js"]
+	"main": {
+		"commands": {
+			"build": "buildFile",
+			"mini": ["build", "miniFile"],
+			"copy": ["mini", "copyFile"]
+		}
+	},
+	"clean": {
+		"commands": {
+			"remove": {
+				"paths": ["${buildPath}", "${htmlPath}/js/${jsFileName}.js"]
+			}
 		}
 
-	],
-	"files_modules": {
-		
+	},
+	"buildFile": {
+		"commands": {
+			"js": {
+				"type": "js",
+				"inPath": ["./lib"],
+				"outPath": "${buildPath}/${version}/${jsFileName}.js"
+			}
+		}
+	},
+	"miniFile": {	
+		"commands": {
+			"mini": {
+				"type": "js",
+				"inPath": "${buildPath}/${version}/${jsFileName}.js",
+				"outPath": "${buildPath}/${version}/${jsFileName}_min.js"
+			}
+		}
+	},
+	"copyFile": {
+		"commands": {
+			"link": {
+				"inPath": "${buildPath}/${version}/${jsFileName}.js",
+				"outPath": "${htmlPath}/js/${jsFileName}.js"
+			}
+		}
 	}
 }

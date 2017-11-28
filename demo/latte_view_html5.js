@@ -1,1 +1,0 @@
-../build/0.0.1/html5/latte_view.js
