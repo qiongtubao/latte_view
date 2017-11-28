@@ -1,0 +1,32 @@
+<html>
+<head></head>
+<body>
+<div id="mocha"></div>
+</body>
+<script type="text/javascript" src="../latte_view.js"></script>
+<script type="text/javascript" src="../js/mocha.js"></script>
+<script type="text/javascript">
+	mocha.setup('bdd');
+	var view = null;
+	describe('latte_view', function() {	
+		it('loadView', function(done) {
+			view = latte_view.load({
+				main: {
+					latte: "",
+					lcss: ""
+				},
+				type: 'html'
+			}, function(err) {
+				if(err) {
+					console.log(err);
+				}
+				done();
+			});
+		});
+		it('addElement', function(done) {
+			var el = view.createElement('img');
+			view.appendChild(el);
+		});
+	});
+</script>
+</html>
